@@ -12,9 +12,9 @@ namespace CleanCode.Infrastructure.Repository
 {
     public class RepositoryBase
     {
-        private readonly IConfiguration configuration;
-        private readonly string? databaseName;
-        private readonly MongoClient mongoClient;
+        protected readonly IConfiguration configuration;
+        protected readonly string? databaseName;
+        protected readonly MongoClient mongoClient;
         protected RepositoryBase(IConfiguration configuration, IMongoClientFactory mongoClientFactory) 
         {
             this.configuration = configuration;

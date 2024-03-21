@@ -16,7 +16,13 @@ namespace CleanCode.Application.Application
         {
             this.userRepository = userRepository;
         }
-        public async Task<User> GetAllUser()
+
+        public async Task<(List<User>, Exception)> PostUser(User user)
+        {
+            return await userRepository.PostUser(user);
+        }
+
+        public async Task<(List<User>, Exception)> GetAllUser()
         {
             return await userRepository.GetAllUser();
         }
