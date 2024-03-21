@@ -3,6 +3,7 @@ using CleanCode.Domain.Database.MongoInterface;
 using CleanCode.Domain.DTO;
 using CleanCode.Interface.Infrastructure;
 using Microsoft.Extensions.Configuration;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -41,8 +42,11 @@ namespace CleanCode.Infrastructure.Repository
                         }
                     }
                 }
-                
-                //-- Insert 
+
+                //-- Unique Id Created
+                user.UserId = ObjectId.GenerateNewId().ToString();
+
+                //-- Insert
                 await usercollection.InsertOneAsync(user);
                 
                 List<User> users = [user];

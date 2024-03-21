@@ -10,7 +10,7 @@ namespace CleanCode.Domain.DTO
     public class User
     {
         [BsonId]
-        public int UserId { get; set; }
+        public string UserId { get; set; } = string.Empty;
 
         [BsonRequired]
         public string Name { get; set; } = string.Empty;
