@@ -18,6 +18,6 @@ namespace CleanCode.Domain.Database.MongoFactory
             this.configuration = configuration;
         }
 
-        public MongoClient GetMongoClient() => new(configuration.GetConnectionString("Mongo:ConnectionString"));
+        public MongoClient GetMongoClient() => new(configuration.GetValue<string>("Mongo:ConnectionString"));
     }
 }

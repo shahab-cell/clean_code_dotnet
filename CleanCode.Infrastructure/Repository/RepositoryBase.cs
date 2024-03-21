@@ -18,7 +18,7 @@ namespace CleanCode.Infrastructure.Repository
         protected RepositoryBase(IConfiguration configuration, IMongoClientFactory mongoClientFactory) 
         {
             this.configuration = configuration;
-            this.databaseName = configuration.GetConnectionString("Mongo:DatabaseName");
+            this.databaseName = configuration.GetValue<string>("Mongo:DatabaseName");
             this.mongoClient = mongoClientFactory.GetMongoClient();
         }
     }
