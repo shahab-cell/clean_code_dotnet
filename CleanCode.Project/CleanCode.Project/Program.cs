@@ -1,4 +1,6 @@
 using CleanCode.Application.Application;
+using CleanCode.Application.Services.ServiceClass;
+using CleanCode.Application.Services.ServiceInterface;
 using CleanCode.Domain.Database.MongoFactory;
 using CleanCode.Domain.Database.MongoInterface;
 using CleanCode.Infrastructure.Repository;
@@ -12,6 +14,7 @@ builder.Services.Configure<MongoClientFactory>(builder.Configuration.GetSection(
 
 // Add services to the container.
 builder.Services.AddScoped<IMongoClientFactory, MongoClientFactory>();
+builder.Services.AddScoped<IPasswordCoder, PasswordCoder>();
 builder.Services.AddScoped<IUserApplication, UserApplication>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 

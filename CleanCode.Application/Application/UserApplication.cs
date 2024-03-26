@@ -1,4 +1,5 @@
-﻿using CleanCode.Domain.DTO;
+﻿using CleanCode.Application.Services.ServiceInterface;
+using CleanCode.Domain.DTO;
 using CleanCode.Interface.Application;
 using CleanCode.Interface.Infrastructure;
 using System;
@@ -12,14 +13,34 @@ namespace CleanCode.Application.Application
     public class UserApplication : IUserApplication
     {
         private readonly IUserRepository userRepository;
-        public UserApplication(IUserRepository userRepository) 
+        private readonly IPasswordCoder passwordCoder;
+        public UserApplication(IUserRepository userRepository, IPasswordCoder passwordCoder) 
         {
             this.userRepository = userRepository;
+            this.passwordCoder = passwordCoder;
         }
 
-        public async Task<(List<User>, Exception)> PostUser(User user)
+        public async Task<(List<User>, Exception)> RegisterUser(User user)
         {
-            return await userRepository.PostUser(user);
+            // Encrypt Password
+            user.Password = passwordCoder.EncryptPassword(user.Password);
+
+            return await userRepository.RegisterUser(user);
+        }
+
+        public async Task<(List<User>, Exception)> LoginUser(Login user)
+        {
+            // Verify Password
+            string encPass = passwordCoder.EncryptPassword(user.Password);
+            bool IsValid = passwordCoder.VerifyPassword(user.Password, encPass);
+            if (IsValid)
+            {
+                return await userRepository.LoginUser(user, encPass);
+            }
+            else
+            {
+                return (null, null);
+            }
         }
 
         public async Task<(List<User>, Exception)> GetAllUser()

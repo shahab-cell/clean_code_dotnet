@@ -9,7 +9,8 @@ namespace CleanCode.Interface.Application
 {
     public interface IUserApplication
     {
-        Task<(List<User>, Exception)> PostUser(User user);
+        Task<(List<User>, Exception)> RegisterUser(User user);
+        Task<(List<User>, Exception)> LoginUser(Login user);
         Task<(List<User>, Exception)> GetAllUser();
     }
 }

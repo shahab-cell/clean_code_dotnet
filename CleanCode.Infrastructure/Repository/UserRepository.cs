@@ -22,13 +22,12 @@ namespace CleanCode.Infrastructure.Repository
             this.userCollection = configuration.GetValue<string>("Mongo:UserCollection");
         }
 
-        public async Task<(List<User>, Exception)> PostUser(User user)
+        public async Task<(List<User>, Exception)> RegisterUser(User user)
         {
             try
             {
                 //-- Access Collection
                 var usercollection = mongoClient.GetDatabase(this.databaseName).GetCollection<User>(this.userCollection);
-                var userFilter = Builders<User>.Filter.Empty;
 
                 // Convert string properties to lowercase
                 PropertyInfo[] properties = typeof(User).GetProperties();
@@ -50,6 +49,36 @@ namespace CleanCode.Infrastructure.Repository
                 await usercollection.InsertOneAsync(user);
                 
                 List<User> users = [user];
+                if (users.Count > 0)
+                {
+                    return (users, new Exception());
+                }
+                return (new List<User>(), new Exception());
+            }
+            catch (Exception ex)
+            {
+                return (new List<User>(), ex);
+            }
+        }
+
+        public async Task<(List<User>, Exception)> LoginUser(Login user, string encPass)
+        {
+            try
+            {
+                //-- Access Collection
+                var usercollection = mongoClient.GetDatabase(this.databaseName).GetCollection<User>(this.userCollection);
+                var userFilter = Builders<User>.Filter.Eq(u => u.Email, user.Email)
+                                 & Builders<User>.Filter.Eq(u => u.Password, encPass)
+                                 & Builders<User>.Filter.Eq(u => u.IsDeleted, false);
+
+                //-- Fetch User to login
+                var userAuth = await usercollection.Find(userFilter).FirstOrDefaultAsync();
+                if (userAuth == null)
+                {
+                    return (new List<User>(), new Exception());
+                }
+
+                List<User> users = [userAuth];
                 if (users.Count > 0)
                 {
                     return (users, new Exception());
