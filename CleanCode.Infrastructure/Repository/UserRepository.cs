@@ -30,20 +30,24 @@ namespace CleanCode.Infrastructure.Repository
                 var usercollection = mongoClient.GetDatabase(this.databaseName).GetCollection<User>(this.userCollection);
 
                 // Convert string properties to lowercase
-                PropertyInfo[] properties = typeof(User).GetProperties();
-                foreach (var property in properties)
-                {
-                    if (property.PropertyType == typeof(string))
-                    {
-                        if (property.GetValue(user) is string value)
-                        {
-                            property.SetValue(user, value.ToLower());
-                        }
-                    }
-                }
-
+                //PropertyInfo[] properties = typeof(User).GetProperties();
+                //foreach (var property in properties)
+                //{
+                //    if (property.PropertyType == typeof(string))
+                //    {
+                //        if (property.GetValue(user) is string value)
+                //        {
+                //            property.SetValue(user, value.ToLower());
+                //        }
+                //    }
+                //}
                 //-- Unique Id Created
                 user.UserId = ObjectId.GenerateNewId().ToString();
+                user.CreatedAt = DateTime.UtcNow;
+                user.IsDeleted = false;
+                // Convert string properties to lowercase
+                _ = user.Name.ToLower();
+                _ = user.Address.ToLower();
 
                 //-- Insert
                 await usercollection.InsertOneAsync(user);
