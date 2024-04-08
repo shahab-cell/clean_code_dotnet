@@ -48,6 +48,7 @@ namespace CleanCode.Infrastructure.Repository
                 // Convert string properties to lowercase
                 _ = user.Name.ToLower();
                 _ = user.Address.ToLower();
+                user.Role = Role.Customer; // HardCode for Admin
 
                 //-- Insert
                 await usercollection.InsertOneAsync(user);

@@ -7,27 +7,25 @@ using System.Threading.Tasks;
 
 namespace CleanCode.Domain.DTO
 {
-    public class User
+    public class Product
     {
         [BsonId]
-        public string UserId { get; set; } = string.Empty;
+        public string Id { get; set; } = string.Empty;
 
         [BsonRequired]
         public string Name { get; set; } = string.Empty;
 
         [BsonRequired]
-        public string Email { get; set; } = string.Empty;
+        public Type_Category Type_Category { get; set; }
 
         [BsonRequired]
-        public string Password { get; set; } = string.Empty;
+        public Anime_Category Anime_Category { get; set; }
 
         [BsonRequired]
-        public string Contact { get; set; } = string.Empty;
-        
-        [BsonRequired]
-        public Role Role { get; set; }
+        public double Price { get; set; }
 
-        public string Address { get; set; } = string.Empty;
+        [BsonRequired]
+        public int Quantity { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
@@ -36,15 +34,14 @@ namespace CleanCode.Domain.DTO
         public bool? IsDeleted { get; set; }
     }
 
-    public class Login
+    public enum Type_Category
     {
-        public string Email { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
+        tshirt,
+        hoody,
+        sweatshirt
     }
-
-    public enum Role
+    public enum Anime_Category
     {
-        Admin,
-        Customer
+
     }
 }
