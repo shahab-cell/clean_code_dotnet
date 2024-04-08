@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CleanCode.Infrastructure.Repository
 {
-    public class RepositoryBase
+    public abstract class RepositoryBase
     {
         protected readonly IConfiguration configuration;
         protected readonly string? databaseName;
