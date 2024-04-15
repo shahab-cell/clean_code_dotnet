@@ -101,9 +101,39 @@ namespace CleanCode.Infrastructure.Repository
             }
         }
 
-        public Task<(List<Product>, Exception)> GetProducts(string typeCategory, string animeCategory, int minPrice, int maxPrice)
+        public async Task<(List<Product>, Exception)> GetProducts(string typeCategory, string animeCategory, int minPrice, int maxPrice)
         {
-            throw new NotImplementedException();
+            try
+            {
+                //-- Access Collection
+                var productcollection = mongoClient.GetDatabase(this.databaseName).GetCollection<Product>(this.productCollection);
+                var productfilters = Builders<Product>.Filter.Empty;
+
+                //-- Create Filter
+                if (!string.IsNullOrEmpty(typeCategory) && Enum.TryParse<Type_Category>(typeCategory, out var parseTypeCategory))
+                {
+                    productfilters &= Builders<Product>.Filter.Eq(p => p.Type_Category, parseTypeCategory);
+                }
+
+                if (!string.IsNullOrEmpty(animeCategory) && Enum.TryParse<Anime_Category>(animeCategory, out var parseAnimeCategory))
+                {
+                    productfilters &= Builders<Product>.Filter.Eq(p => p.Anime_Category, parseAnimeCategory);
+                }
+
+                if (minPrice != null || minPrice != 0)
+                    productfilters &= Builders<Product>.Filter.Gte(p => p.Price, minPrice);
+
+                if (maxPrice != null || maxPrice != 0)
+                    productfilters &= Builders<Product>.Filter.Lte(p => p.Price, maxPrice);
+
+                var products = await productcollection.Find(productfilters).ToListAsync();
+
+                return (products, new Exception());
+            }
+            catch (Exception ex)
+            {
+                return (new List<Product>(), ex);
+            }
         }
     }
 }
