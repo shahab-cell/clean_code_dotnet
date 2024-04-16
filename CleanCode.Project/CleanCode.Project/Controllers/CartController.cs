@@ -3,6 +3,7 @@ using CleanCode.Interface.Application;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using System.Text;
 
 namespace CleanCode.Project.Controllers
 {
@@ -11,9 +12,11 @@ namespace CleanCode.Project.Controllers
     public class CartController : ControllerBase
     {
         private readonly ICartApplication cartApplication;
-        public CartController(ICartApplication cartApplication)
+        private readonly IHttpClientFactory httpClientFactory;
+        public CartController(ICartApplication cartApplication, IHttpClientFactory httpClientFactory)
         {
             this.cartApplication = cartApplication;
+            this.httpClientFactory = httpClientFactory;
         }
 
         [HttpPost("cart/add/userId/{userId}")]
@@ -71,6 +74,56 @@ namespace CleanCode.Project.Controllers
             else
             {
                 return Ok(new { cart = result.Item1, exception = result.Item2.Message, status = "success" });
+            }
+        }
+
+        [HttpPost("courseId")]
+        public async Task<IActionResult> GetUserByCourseId()
+        {
+            try
+            {
+                var httpClient = httpClientFactory.CreateClient();
+
+                string apiUrl = "https://easypaisaacademy.pk/auth/learntechpk/user_progress.php";
+
+                // Prepare request data
+                var requestData = new
+                {
+                    action = "userprogress_retrieved",
+                    webtoken = "Lteasy@2024%paisa",
+                    courseid = "5"
+                };
+                // Convert data to JSON
+                var jsonRequest = Newtonsoft.Json.JsonConvert.SerializeObject(requestData);
+
+                // Create the HTTP request content
+                var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+
+                // Send POST request
+                var response = await httpClient.PostAsync(apiUrl, content);
+
+                // Check if request was successful
+                if (response.IsSuccessStatusCode)
+                {
+                    // Read response content
+                    var jsonResponse = await response.Content.ReadAsStringAsync();
+
+                    // Optionally, deserialize JSON response if needed
+                    // var responseObject = Newtonsoft.Json.JsonConvert.DeserializeObject<ResponseObjectType>(jsonResponse);
+
+                    // Return response
+                    return Ok(jsonResponse);
+                }
+                else
+                {
+                    // Return error status code if request was not successful
+                    return StatusCode((int)response.StatusCode);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }

@@ -12,6 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Configure Database
 builder.Services.Configure<MongoClientFactory>(builder.Configuration.GetSection("Mongo"));
 
+builder.Services.AddHttpClient();
+
 // Add services to the container.
 builder.Services.AddScoped<IMongoClientFactory, MongoClientFactory>();
 builder.Services.AddScoped<IPasswordCoder, PasswordCoder>();
