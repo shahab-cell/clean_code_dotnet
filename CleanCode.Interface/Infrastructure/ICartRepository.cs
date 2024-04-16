@@ -9,6 +9,7 @@ namespace CleanCode.Interface.Infrastructure
 {
     public interface ICartRepository
     {
-        Task<(List<Cart>, Exception)> AddCart(string userId, List<Product> products);
+        Task<(List<Cart>, Exception)> AddCart(string userId, List<string> products);
+        Task<(List<Cart>, Exception)> RemoveCart(string userId, List<string> products);
     }
 }

@@ -17,9 +17,14 @@ namespace CleanCode.Application.Application
             this.cartRepository = cartRepository;
         }
 
-        public async Task<(List<Cart>, Exception)> AddCart(string userId, List<Product> products)
+        public async Task<(List<Cart>, Exception)> AddCart(string userId, List<string> products)
         {
             return await cartRepository.AddCart(userId, products);
+        }
+
+        public async Task<(List<Cart>, Exception)> RemoveCart(string userId, List<string> products)
+        {
+            return await cartRepository.RemoveCart(userId, products);
         }
     }
 }

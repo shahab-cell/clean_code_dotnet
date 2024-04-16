@@ -14,7 +14,7 @@ namespace CleanCode.Domain.DTO
 
         public string UserId { get; set; } = string.Empty;
 
-        public List<Product> ProductIds { get; set; } = [];
+        public List<string> ProductIds { get; set; } = [];
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
