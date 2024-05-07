@@ -1,4 +1,4 @@
-﻿using CleanCode.Application.Services.ServiceInterface;
+﻿using CleanCode.Application.Services;
 using CleanCode.Domain.DTO;
 using CleanCode.Interface.Application;
 using CleanCode.Interface.Infrastructure;
@@ -13,8 +13,8 @@ namespace CleanCode.Application.Application
     public class UserApplication : IUserApplication
     {
         private readonly IUserRepository userRepository;
-        private readonly IPasswordCoder passwordCoder;
-        public UserApplication(IUserRepository userRepository, IPasswordCoder passwordCoder) 
+        private readonly PasswordProtection passwordCoder;
+        public UserApplication(IUserRepository userRepository, PasswordProtection passwordCoder) 
         {
             this.userRepository = userRepository;
             this.passwordCoder = passwordCoder;
@@ -35,7 +35,11 @@ namespace CleanCode.Application.Application
             bool IsValid = passwordCoder.VerifyPassword(user.Password, encPass);
             if (IsValid)
             {
-                return await userRepository.LoginUser(user, encPass);
+                var user_logged = await userRepository.LoginUser(user, encPass);
+                // Generate Token
+
+
+                return user_logged;
             }
             else
             {

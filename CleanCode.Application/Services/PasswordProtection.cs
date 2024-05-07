@@ -1,14 +1,13 @@
-﻿using CleanCode.Application.Services.ServiceInterface;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanCode.Application.Services.ServiceClass
+namespace CleanCode.Application.Services
 {
-    public class PasswordCoder : IPasswordCoder
+    public class PasswordProtection
     {
         public string EncryptPassword(string password)
         {
