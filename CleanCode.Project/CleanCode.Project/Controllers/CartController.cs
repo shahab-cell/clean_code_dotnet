@@ -1,5 +1,6 @@
 ﻿using CleanCode.Domain.DTO;
 using CleanCode.Interface.Application;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +20,7 @@ namespace CleanCode.Project.Controllers
             this.httpClientFactory = httpClientFactory;
         }
 
+        [Authorize]
         [HttpPost("cart/add/userId/{userId}")]
         public async Task<IActionResult> AddCart(string userId, [FromBody] List<string> products)
         {
@@ -48,6 +50,7 @@ namespace CleanCode.Project.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost("cart/remove/userId/{userId}")]
         public async Task<IActionResult> RemoveCart(string userId, [FromBody] List<string> products)
         {

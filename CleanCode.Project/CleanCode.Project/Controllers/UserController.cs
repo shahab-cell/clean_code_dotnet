@@ -1,6 +1,7 @@
 ﻿using CleanCode.Domain.DTO;
 using CleanCode.Domain.JWT_Configuration;
 using CleanCode.Interface.Application;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -92,6 +93,7 @@ namespace CleanCode.Project.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("users")]
         public async Task<IActionResult> GetAllUser()
         {

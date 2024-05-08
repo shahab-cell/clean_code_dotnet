@@ -1,6 +1,7 @@
 ﻿using CleanCode.Application.Application;
 using CleanCode.Domain.DTO;
 using CleanCode.Interface.Application;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +17,7 @@ namespace CleanCode.Project.Controllers
             this.productApplication = productApplication;
         }
 
+        [Authorize]
         [HttpPost("add/product")]
         public async Task<IActionResult> AddProduct([FromBody] Product product)
         {
@@ -40,6 +42,7 @@ namespace CleanCode.Project.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost("edit/product")]
         public async Task<IActionResult> EditProduct([FromBody] Product product)
         {
@@ -64,6 +67,7 @@ namespace CleanCode.Project.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("products/id/{productId}")]
         public async Task<IActionResult> GetProductById(string productId)
         {
@@ -88,6 +92,7 @@ namespace CleanCode.Project.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("products")]
         public async Task<IActionResult> GetProducts([FromQuery] string typeCategory, [FromQuery] string animeCategory,
                                                      [FromQuery] int minPrice, [FromQuery] int maxPrice)
