@@ -36,9 +36,6 @@ namespace CleanCode.Application.Application
             if (IsValid)
             {
                 var user_logged = await userRepository.LoginUser(user, encPass);
-                // Generate Token
-
-
                 return user_logged;
             }
             else
